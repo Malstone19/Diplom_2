@@ -14,11 +14,11 @@ def random_user():
 
 
 @pytest.fixture(scope='function')
-def get_random_user_token():
-    payload = ApiUser.create_random_user()
-    response = ApiUser.registration_user(payload['email'], payload['password'], payload['name'])
+def get_random_user_token(random_user):
+    response = ApiUser.login_user(email=random_user['email'], password=random_user['password'])
     token = response.json()['accessToken']
 
     yield token
 
     ApiUser.delete_user(token)
+
